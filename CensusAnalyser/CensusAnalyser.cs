@@ -12,7 +12,7 @@ namespace CensusAnalyser
             {
                 throw new CensusAnalyserException("File Not Found", CensusAnalyserException.ExceptionType.FILE_NOT_FOUND);
             }
-            if (Path.GetExtension(csvFilePath)!=".csv")
+            if (Path.GetExtension(csvFilePath) != ".csv")
             {
                 throw new CensusAnalyserException("Invalid File Type", CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
             }
@@ -20,7 +20,7 @@ namespace CensusAnalyser
             if (censusData[0] != dataHeaders)
             {
                 throw new CensusAnalyserException("Incorrect header in Data", CensusAnalyserException.ExceptionType.INCORRECT_HEADER);
-            }  
+            }
             foreach (string data in censusData)
             {
                 if (!data.Contains(","))
