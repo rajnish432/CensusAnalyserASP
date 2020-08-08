@@ -4,12 +4,14 @@ using NUnit.Framework;
 namespace CensusAnalyserTest
 {
     public class CensusAnalyserTest
-    {
-        static string indianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\IndiaStateCensusData.csv";
-        static string wrongIndianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\IndiaData.csv";
-        static string wrongIndianStateCensusFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\IndiaStateCensusData.pdf";
-        static string indianStateCodeFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\IndiaStateCode.csv";
-        static string wrongIndianStateCodeFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\IndiaStateCode.pdf";
+    { 
+        static string indianStateCensusHeaders = "State,Population,AreaInSqKm,DensityPerSqKm";
+        static string indianStateCodeHeaders = "SrNo,State Name,TIN,StateCode";
+        static string indianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCensusData.csv";
+        static string wrongIndianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaData.csv";
+        static string wrongIndianStateCensusFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCensusData.txt";
+        static string indianStateCodeFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCode.csv";
+        static string wrongIndianStateCodeFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCode.txt";
 
         CensusAnalyser.CensusAnalyser censusAnalyser;
         [SetUp]
@@ -21,8 +23,8 @@ namespace CensusAnalyserTest
         [Test]
         public void givenIndianCensusDataFile_WhenReaded_ShouldReturnCensusDataCount()
         {
-            int totalRecord = censusAnalyser.loadIndiaStateCensusData(indianStateCensusFilePath);
-            Assert.AreEqual(29, totalRecord);
+            string[] totalRecord= censusAnalyser.loadCensusData(indianStateCensusFilePath,indianStateCensusHeaders);
+            Assert.AreEqual(29, totalRecord.Length);
         }
 
         [Test]
@@ -30,7 +32,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCensusData(wrongIndianStateCensusFilePath);
+                 censusAnalyser.loadCensusData(wrongIndianStateCensusFilePath,indianStateCensusHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -43,7 +45,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCensusData(wrongIndianStateCensusFileType);
+                censusAnalyser.loadCensusData(wrongIndianStateCensusFileType,indianStateCensusHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -56,7 +58,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCensusData(indianStateCensusFilePath);
+                censusAnalyser.loadCensusData(indianStateCensusFilePath,indianStateCensusHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -69,7 +71,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCensusData(indianStateCensusFilePath);
+                censusAnalyser.loadCensusData(indianStateCensusFilePath,indianStateCensusHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -80,8 +82,8 @@ namespace CensusAnalyserTest
         [Test]
         public void givenIndianStateCodeDataFile_WhenReaded_ShouldReturnCensusDataCount()
         {
-            int totalRecord = censusAnalyser.loadIndiaStateCodeData(indianStateCodeFilePath);
-            Assert.AreEqual(37, totalRecord);
+            string[] totalRecord = censusAnalyser.loadCensusData(indianStateCodeFilePath,indianStateCodeHeaders);
+            Assert.AreEqual(37, totalRecord.Length);
         }
 
         [Test]
@@ -89,7 +91,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCodeData(wrongIndianStateCensusFilePath);
+                censusAnalyser.loadCensusData(wrongIndianStateCensusFilePath,indianStateCodeHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -102,7 +104,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCodeData(wrongIndianStateCodeFileType);
+                censusAnalyser.loadCensusData(wrongIndianStateCodeFileType,indianStateCodeHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -115,7 +117,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCodeData(indianStateCodeFilePath);
+                censusAnalyser.loadCensusData(indianStateCodeFilePath,indianStateCodeHeaders);
             }
             catch (CensusAnalyserException ce)
             {
@@ -128,7 +130,7 @@ namespace CensusAnalyserTest
         {
             try
             {
-                int totalRecord = censusAnalyser.loadIndiaStateCodeData(indianStateCodeFilePath);
+                censusAnalyser.loadCensusData(indianStateCodeFilePath,indianStateCodeHeaders);
             }
             catch (CensusAnalyserException ce)
             {
