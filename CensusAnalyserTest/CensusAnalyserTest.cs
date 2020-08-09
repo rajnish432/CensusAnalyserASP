@@ -17,102 +17,103 @@ namespace CensusAnalyserTest
         static string wrongIndianStateCodeFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCode.txt";
         static string delimiterIndianStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\DelimiterIndiaStateCode.csv";
         static string wrongHeaderStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\WrongIndiaStateCode.csv";
-
-        CensusAnalyser.CensusAnalyser censusAnalyser;
-        CensusAnalyserException censusAnalyserException;
+        
+        CSVFactory csvFactory;
         CSVData csvData;
+
         [SetUp]
         public void Setup()
         {
+            csvFactory = new CSVFactory();
         }
 
         [Test]
         public void givenIndianCensusDataFile_WhenReaded_ShouldReturnCensusDataCount()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(indianStateCensusFilePath, indianStateCensusHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser=(CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            string[] totalRecord= (string[])csvData();
+            string[] totalRecord= (string[])csvData(indianStateCensusFilePath, indianStateCensusHeaders);
             Assert.AreEqual(29, totalRecord.Length);
         }
 
         [Test]
         public void givenWrongIndianCensusDataFile_WhenReaded_ShouldReturnCustomException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(wrongIndianStateCensusFilePath, indianStateCensusHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongIndianStateCensusFilePath, indianStateCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, ex.eType);
         }
 
         [Test]
         public void givenWrongIndianCensusDataFileType_WhenReaded_ShouldReturnCustomException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(wrongIndianStateCensusFileType, indianStateCensusHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongIndianStateCensusFileType, indianStateCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE, ex.eType);
         }
 
         [Test]
         public void givenIndianCensusDataFile_WhenNotProper_ShouldReturnException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(delimiterIndianCensusFilePath, indianStateCensusHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(delimiterIndianCensusFilePath, indianStateCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_DELIMITER, ex.eType);
         }
 
         [Test]
         public void givenIndianCensusDataFile_WhenHeaderNotProper_ShouldReturnException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(wrongHeaderIndianCensusFilePath, indianStateCensusHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongHeaderIndianCensusFilePath, indianStateCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, ex.eType);
         }
 
         [Test]
         public void givenIndianStateCodeDataFile_WhenReaded_ShouldReturnCensusDataCount()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(indianStateCodeFilePath, indianStateCodeHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            string[] totalRecord = (string[])csvData();
+            string[] totalRecord = (string[])csvData(indianStateCodeFilePath, indianStateCodeHeaders);
             Assert.AreEqual(37, totalRecord.Length);
         }
 
         [Test]
         public void givenWrongIndianStateCodeDataFile_WhenReaded_ShouldReturnCustomException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(wrongIndianStateCensusFilePath, indianStateCodeHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongIndianStateCensusFilePath, indianStateCodeHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, ex.eType);
         }
 
         [Test]
         public void givenWrongIndianStateCodeFileType_WhenReaded_ShouldReturnCustomException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(wrongIndianStateCodeFileType, indianStateCodeHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongIndianStateCodeFileType, indianStateCodeHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE, ex.eType);
         }
 
         [Test]
         public void givenIndianStateCodeDataFile_WhenNotProper_ShouldReturnException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(delimiterIndianStateCodeFilePath, indianStateCodeHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(delimiterIndianStateCodeFilePath, indianStateCodeHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_DELIMITER, ex.eType);
         }
 
         [Test]
         public void givenIndianStateCodeDataFile_WhenHeaderNotProper_ShouldReturnException()
         {
-            censusAnalyser = new CensusAnalyser.CensusAnalyser(wrongHeaderStateCodeFilePath, indianStateCodeHeaders);
+            CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            var ex = Assert.Throws<CensusAnalyserException>(() => csvData());
+            var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongHeaderStateCodeFilePath, indianStateCodeHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, ex.eType);
         }
     }
