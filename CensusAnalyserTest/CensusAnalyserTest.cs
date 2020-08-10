@@ -1,4 +1,5 @@
 using CensusAnalyser;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 using static CensusAnalyser.CensusAnalyser;
@@ -18,6 +19,7 @@ namespace CensusAnalyserTest
         static string wrongIndianStateCodeFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCode.txt";
         static string delimiterIndianStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\DelimiterIndiaStateCode.csv";
         static string wrongHeaderStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\WrongIndiaStateCode.csv";
+        static string destinationFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\SortedIndiaStateCensusData.csv";
         
         CSVFactory csvFactory;
         CSVData csvData;
@@ -118,6 +120,15 @@ namespace CensusAnalyserTest
             csvData = new CSVData(censusAnalyser.loadCensusData);
             var ex = Assert.Throws<CensusAnalyserException>(() => csvData(wrongHeaderStateCodeFilePath, indianStateCodeHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, ex.eType);
+        }
+
+        [Test]
+        public void givenIndianStateCensusFile_WhenProper_ShouldReturnSortedData()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData=censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath,destinationFilePath).ToString();
+            string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
+            Assert.AreEqual("Andhra Pradesh,49386799,162968,303", sortedIndianData[0]);
         }
     }
 }

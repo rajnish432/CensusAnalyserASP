@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace CensusAnalyser
 {
@@ -33,6 +34,20 @@ namespace CensusAnalyser
                 }
             }
             return censusData.Skip(1).ToList();
+        }
+
+        public object getSortedDataInJsonFormat(string csvFilePath,string destinationFilePath)
+        {
+            string[] lines = File.ReadAllLines(csvFilePath);
+            var data = lines.Skip(1);
+            var sorted =
+                from line in data
+                let x = line.Split(',')
+                orderby x[0]
+                select line;
+            File.WriteAllLines(destinationFilePath, lines.Take(1).Concat(sorted.ToArray()));
+            List<string> sortedData = sorted.ToList<string>();
+            return JsonConvert.SerializeObject(sortedData);
         }
     }
 }
