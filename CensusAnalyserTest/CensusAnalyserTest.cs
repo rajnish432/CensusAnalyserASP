@@ -22,13 +22,13 @@ namespace CensusAnalyserTest
 
         CSVFactory csvFactory;
         CSVData csvData;
-        List<string> totalRecord;
+        Dictionary<int,string> totalRecord;
 
         [SetUp]
         public void Setup()
         {
             csvFactory = new CSVFactory();
-            totalRecord = new List<string>();
+            totalRecord = new Dictionary<int, string>();
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace CensusAnalyserTest
         {
             CensusAnalyser.CensusAnalyser censusAnalyser=(CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            totalRecord= (List<string>)csvData(indianStateCensusFilePath, indianStateCensusHeaders);
+            totalRecord= (Dictionary<int,string>)csvData(indianStateCensusFilePath, indianStateCensusHeaders);
             Assert.AreEqual(29, totalRecord.Count);
         }
 
@@ -81,7 +81,7 @@ namespace CensusAnalyserTest
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            totalRecord = (List<string>)csvData(indianStateCodeFilePath, indianStateCodeHeaders);
+            totalRecord = (Dictionary<int,string>)csvData(indianStateCodeFilePath, indianStateCodeHeaders);
             Assert.AreEqual(37, totalRecord.Count);
         }
 
@@ -125,7 +125,7 @@ namespace CensusAnalyserTest
         public void givenIndianStateCensusFile_WhenProper_ShouldReturnSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData=censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath,0).ToString();
+            string sortedData=censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath,indianStateCensusHeaders,0).ToString();
             string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
             Assert.AreEqual("Andhra Pradesh,49386799,162968,303", sortedIndianData[0]);
         }
@@ -134,7 +134,7 @@ namespace CensusAnalyserTest
         public void givenIndianStateCensusFile_WhenSorted_ShouldReturnLastSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath, 0).ToString();
+            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath,indianStateCensusHeaders, 0).ToString();
             string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
             Assert.AreEqual("Uttarakhand,10116752,53483,189", sortedIndianData[27]);
         }
@@ -143,7 +143,7 @@ namespace CensusAnalyserTest
         public void givenIndianStateCodeFile_WhenProper_ShouldReturnSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCodeFilePath, 3).ToString();
+            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCodeFilePath,indianStateCodeHeaders, 3).ToString();
             string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
             Assert.AreEqual("3,Andhra Pradesh New,37,AD", sortedIndianData[0]);
         }
@@ -152,7 +152,7 @@ namespace CensusAnalyserTest
         public void givenIndianStateCodeFile_WhenSorted_ShouldReturnLastSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCodeFilePath, 3).ToString();
+            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCodeFilePath,indianStateCodeHeaders, 3).ToString();
             string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
             Assert.AreEqual("37,West Bengal,19,WB", sortedIndianData[36]);
         }
