@@ -10,17 +10,16 @@ namespace CensusAnalyserTest
     { 
         static string indianStateCensusHeaders = "State,Population,AreaInSqKm,DensityPerSqKm";
         static string indianStateCodeHeaders = "SrNo,State Name,TIN,StateCode";
-        static string indianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCensusData.csv";
-        static string wrongHeaderIndianCensusFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\WrongIndiaStateCensusData.csv";
-        static string delimiterIndianCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\DelimiterIndiaStateCensusData.csv";
-        static string wrongIndianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaData.csv";
-        static string wrongIndianStateCensusFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCensusData.txt";
-        static string indianStateCodeFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCode.csv";
-        static string wrongIndianStateCodeFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\IndiaStateCode.txt";
-        static string delimiterIndianStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\DelimiterIndiaStateCode.csv";
-        static string wrongHeaderStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\WrongIndiaStateCode.csv";
-        static string destinationFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CsvFiles\SortedIndiaStateCensusData.csv";
-        
+        static string indianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\IndiaStateCensusData.csv";
+        static string wrongHeaderIndianCensusFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\WrongIndiaStateCensusData.csv";
+        static string delimiterIndianCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\DelimiterIndiaStateCensusData.csv";
+        static string wrongIndianStateCensusFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\IndiaData.csv";
+        static string wrongIndianStateCensusFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\IndiaStateCensusData.txt";
+        static string indianStateCodeFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\IndiaStateCode.csv";
+        static string wrongIndianStateCodeFileType = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\IndiaStateCode.txt";
+        static string delimiterIndianStateCodeFilePath= @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\DelimiterIndiaStateCode.csv";
+        static string wrongHeaderStateCodeFilePath = @"C:\Users\Dell\source\repos\CensusAnalyser\CensusAnalyserTest\CsvFiles\WrongIndiaStateCode.csv";
+
         CSVFactory csvFactory;
         CSVData csvData;
         List<string> totalRecord;
@@ -126,9 +125,36 @@ namespace CensusAnalyserTest
         public void givenIndianStateCensusFile_WhenProper_ShouldReturnSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData=censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath,destinationFilePath).ToString();
+            string sortedData=censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath,0).ToString();
             string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
             Assert.AreEqual("Andhra Pradesh,49386799,162968,303", sortedIndianData[0]);
+        }
+
+        [Test]
+        public void givenIndianStateCensusFile_WhenSorted_ShouldReturnLastSortedData()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCensusFilePath, 0).ToString();
+            string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
+            Assert.AreEqual("Uttarakhand,10116752,53483,189", sortedIndianData[27]);
+        }
+
+        [Test]
+        public void givenIndianStateCodeFile_WhenProper_ShouldReturnSortedData()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCodeFilePath, 3).ToString();
+            string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
+            Assert.AreEqual("3,Andhra Pradesh New,37,AD", sortedIndianData[0]);
+        }
+
+        [Test]
+        public void givenIndianStateCodeFile_WhenSorted_ShouldReturnLastSortedData()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.getSortedDataInJsonFormat(indianStateCodeFilePath, 3).ToString();
+            string[] sortedIndianData = JsonConvert.DeserializeObject<string[]>(sortedData);
+            Assert.AreEqual("37,West Bengal,19,WB", sortedIndianData[36]);
         }
     }
 }
