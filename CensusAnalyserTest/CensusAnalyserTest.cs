@@ -1,5 +1,6 @@
 using CensusAnalyser;
 using NUnit.Framework;
+using System.Collections.Generic;
 using static CensusAnalyser.CensusAnalyser;
 
 namespace CensusAnalyserTest
@@ -20,11 +21,13 @@ namespace CensusAnalyserTest
         
         CSVFactory csvFactory;
         CSVData csvData;
+        List<string> totalRecord;
 
         [SetUp]
         public void Setup()
         {
             csvFactory = new CSVFactory();
+            totalRecord = new List<string>();
         }
 
         [Test]
@@ -32,8 +35,8 @@ namespace CensusAnalyserTest
         {
             CensusAnalyser.CensusAnalyser censusAnalyser=(CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            string[] totalRecord= (string[])csvData(indianStateCensusFilePath, indianStateCensusHeaders);
-            Assert.AreEqual(29, totalRecord.Length);
+            totalRecord= (List<string>)csvData(indianStateCensusFilePath, indianStateCensusHeaders);
+            Assert.AreEqual(29, totalRecord.Count);
         }
 
         [Test]
@@ -77,8 +80,8 @@ namespace CensusAnalyserTest
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = (CensusAnalyser.CensusAnalyser)csvFactory.getClassObject();
             csvData = new CSVData(censusAnalyser.loadCensusData);
-            string[] totalRecord = (string[])csvData(indianStateCodeFilePath, indianStateCodeHeaders);
-            Assert.AreEqual(37, totalRecord.Length);
+            totalRecord = (List<string>)csvData(indianStateCodeFilePath, indianStateCodeHeaders);
+            Assert.AreEqual(37, totalRecord.Count);
         }
 
         [Test]
