@@ -203,5 +203,14 @@ namespace CensusAnalyserTest
             CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
             Assert.AreEqual("Bihar", sortedIndianData[0].state);
         }
+
+        [Test]
+        public void givenIndianStateCensusFile_WhenProper_ShouldReturnMostLargeAreaState()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath, indianStateCensusHeaders, "area", SortOrder.SortBy.DESC).ToString();
+            CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
+            Assert.AreEqual("Rajasthan", sortedIndianData[0].state);
+        }
     }
 }
