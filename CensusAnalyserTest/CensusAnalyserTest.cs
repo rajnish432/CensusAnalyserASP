@@ -195,5 +195,13 @@ namespace CensusAnalyserTest
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, sortedData.eType);
         }
 
+        [Test]
+        public void givenIndianStateCensusFile_WhenProper_ShouldReturnMostDensityState()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath, indianStateCensusHeaders, "density", SortOrder.SortBy.DESC).ToString();
+            CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
+            Assert.AreEqual("Bihar", sortedIndianData[0].state);
+        }
     }
 }

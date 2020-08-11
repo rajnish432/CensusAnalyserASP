@@ -61,6 +61,7 @@ namespace CensusAnalyser
                 case "stateCode": return lines.OrderBy(x => x.stateCode).ToList();
                 case "state": return lines.OrderBy(x => x.state).ToList();
                 case "area": return lines.OrderBy(x => x.area).ToList();
+                case "density": return lines.OrderBy(x => x.density).ToList();
                 case "population": return lines.OrderBy(x => x.population).ToList();
                 default: return lines.OrderBy(x => x.tin).ToList();
             }    
