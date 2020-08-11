@@ -138,7 +138,7 @@ namespace CensusAnalyserTest
         public void givenIndianStateCensusFile_WhenProper_ShouldReturnSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData=censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath,indianStateCensusHeaders,"state").ToString();
+            string sortedData=censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath,indianStateCensusHeaders,"state", SortOrder.SortBy.ASC).ToString();
             CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
             Assert.AreEqual("Andhra Pradesh", sortedIndianData[0].state);
         }
@@ -147,16 +147,16 @@ namespace CensusAnalyserTest
         public void givenIndianStateCensusFile_WhenSorted_ShouldReturnLastSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath,indianStateCensusHeaders, "state").ToString();
+            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath,indianStateCensusHeaders, "state", SortOrder.SortBy.ASC).ToString();
             CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
-            Assert.AreEqual("Uttarakhand", sortedIndianData[27].state);
+            Assert.AreEqual("West Bengal", sortedIndianData[28].state);
         }
 
         [Test]
         public void givenIndianStateCodeFile_WhenProper_ShouldReturnSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCodeFilePath,indianStateCodeHeaders, "stateCode").ToString();
+            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCodeFilePath,indianStateCodeHeaders, "stateCode", SortOrder.SortBy.ASC).ToString();
             StateCodeDAO[] sortedIndianData = JsonConvert.DeserializeObject<StateCodeDAO[]>(sortedData);
             Assert.AreEqual("AD", sortedIndianData[0].stateCode);
         }
@@ -165,9 +165,35 @@ namespace CensusAnalyserTest
         public void givenIndianStateCodeFile_WhenSorted_ShouldReturnLastSortedData()
         {
             CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
-            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCodeFilePath,indianStateCodeHeaders, "stateCode").ToString();
+            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCodeFilePath,indianStateCodeHeaders, "stateCode",SortOrder.SortBy.ASC).ToString();
             StateCodeDAO[] sortedIndianData = JsonConvert.DeserializeObject<StateCodeDAO[]>(sortedData);
             Assert.AreEqual("WB", sortedIndianData[36].stateCode);
         }
+
+        [Test]
+        public void givenIndianStateCensusFile_WhenProper_ShouldReturnMostPopulousState()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.getSortedStateCodeDataInJsonFormat(indianStateCensusFilePath, indianStateCensusHeaders, "population", SortOrder.SortBy.DESC).ToString();
+            CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
+            Assert.AreEqual("Uttar Pradesh", sortedIndianData[0].state);
+        }
+
+        [Test]
+        public void givenWrongIndianStateCensusFile_WhenNotProper_ShouldReturnFileNotFound()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            var sortedData = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.getSortedStateCodeDataInJsonFormat(wrongIndianStateCensusFilePath, indianStateCensusHeaders, "population", SortOrder.SortBy.DESC).ToString());
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, sortedData.eType);
+        }
+
+        [Test]
+        public void givenWrongIndianStateCensusHeaderFile_WhenNotProper_ShouldReturnHeaderException()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            var sortedData = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.getSortedStateCodeDataInJsonFormat(wrongHeaderIndianCensusFilePath, indianStateCensusHeaders, "population", SortOrder.SortBy.DESC).ToString());
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, sortedData.eType);
+        }
+
     }
 }

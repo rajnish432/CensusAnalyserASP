@@ -44,11 +44,13 @@ namespace CensusAnalyser
             return dataMap.ToDictionary (p => p.Key, p => p.Value);
         }
 
-        public object getSortedStateCodeDataInJsonFormat(string csvFilePath,string dataheaders,string sortField)
+        public object getSortedStateCodeDataInJsonFormat(string csvFilePath,string dataheaders,string sortField,SortOrder.SortBy sortBy)
         {
             var censusData = (Dictionary<string, CensusDTO>)loadCensusData(csvFilePath, dataheaders);
             List<CensusDTO> lines = censusData.Values.ToList();
             List<CensusDTO> lists = getDataSorted (sortField,lines);
+            if(sortBy.Equals(SortOrder.SortBy.DESC))
+                lists.Reverse();
             return JsonConvert.SerializeObject(lists);
         }
 
