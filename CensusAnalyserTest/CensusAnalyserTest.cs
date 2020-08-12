@@ -237,5 +237,14 @@ namespace CensusAnalyserTest
             var ex = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(Country.BRAZIL, wrongHeaderUSCensusFilePath, usCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.NO_SUCH_COUNTRY, ex.eType);
         }
+
+        [Test]
+        public void GivenUSCensusFile_WhenProper_ShouldReturnMostPopulousState()
+        {
+            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
+            string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "population", SortOrder.SortBy.DESC).ToString();
+            USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
+            Assert.AreEqual("California", sortedIndianData[0].stateName);
+        }
     }
 }
