@@ -156,7 +156,6 @@ namespace CensusAnalyserTest
         [Test]
         public void GivenIndianStateCensusFile_WhenProper_ShouldReturnMostPopulousState()
         {
-            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.INDIA, indianStateCensusFilePath, indianStateCensusHeaders, "population", SortOrder.SortBy.DESC).ToString();
             CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
             Assert.AreEqual("Uttar Pradesh", sortedIndianData[0].state);
@@ -165,7 +164,6 @@ namespace CensusAnalyserTest
         [Test]
         public void GivenWrongIndianStateCensusFile_WhenNotProper_ShouldReturnFileNotFound()
         {
-            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
             var sortedData = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.INDIA, wrongIndianStateCensusFilePath, indianStateCensusHeaders, "population", SortOrder.SortBy.DESC).ToString());
             Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, sortedData.eType);
         }
@@ -173,7 +171,6 @@ namespace CensusAnalyserTest
         [Test]
         public void GivenWrongIndianStateCensusHeaderFile_WhenNotProper_ShouldReturnHeaderException()
         {
-            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
             var sortedData = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.INDIA, wrongHeaderIndianCensusFilePath, indianStateCensusHeaders, "population", SortOrder.SortBy.DESC).ToString());
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, sortedData.eType);
         }
@@ -181,7 +178,6 @@ namespace CensusAnalyserTest
         [Test]
         public void GivenIndianStateCensusFile_WhenProper_ShouldReturnMostDensityState()
         {
-            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.INDIA, indianStateCensusFilePath, indianStateCensusHeaders, "density", SortOrder.SortBy.DESC).ToString();
             CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
             Assert.AreEqual("Bihar", sortedIndianData[0].state);
@@ -190,7 +186,6 @@ namespace CensusAnalyserTest
         [Test]
         public void GivenIndianStateCensusFile_WhenProper_ShouldReturnMostLargeAreaState()
         {
-            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.INDIA, indianStateCensusFilePath, indianStateCensusHeaders, "area", SortOrder.SortBy.DESC).ToString();
             CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(sortedData);
             Assert.AreEqual("Rajasthan", sortedIndianData[0].state);
@@ -241,10 +236,25 @@ namespace CensusAnalyserTest
         [Test]
         public void GivenUSCensusFile_WhenProper_ShouldReturnMostPopulousState()
         {
-            CensusAnalyser.CensusAnalyser censusAnalyser = new CensusAnalyser.CensusAnalyser();
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "population", SortOrder.SortBy.DESC).ToString();
             USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
             Assert.AreEqual("California", sortedIndianData[0].stateName);
+        }
+
+        [Test]
+        public void GivenUSCensusFile_WhenProper_ShouldReturnMostLargeAreaState()
+        {
+            string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "usArea", SortOrder.SortBy.DESC).ToString();
+            USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
+            Assert.AreEqual("Alaska", sortedIndianData[0].stateName);
+        }
+
+        [Test]
+        public void GivenUSCensusFile_WhenProper_ShouldReturnLargePopulationDensityState()
+        {
+            string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "populationDensity", SortOrder.SortBy.DESC).ToString();
+            USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
+            Assert.AreEqual("District of Columbia", sortedIndianData[0].stateName);
         }
     }
 }
