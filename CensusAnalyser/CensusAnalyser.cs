@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CensusAnalyser.POCO;
 using Newtonsoft.Json;
@@ -43,6 +44,14 @@ namespace CensusAnalyser
                 case "population": return lines.OrderBy(x => x.population).ToList();
                 default: return lines.OrderBy(x => x.tin).ToList();
             }    
+        }
+
+        public string GetMostDenseStateBetweenUSAndIndia(CensusDataDAO censusDataDAO, USCensusDAO uSCensusDAO)
+        {
+            Console.WriteLine(censusDataDAO.density+" "+ uSCensusDAO.populationDensity);
+            string state = (censusDataDAO.density > uSCensusDAO.populationDensity)
+                ? censusDataDAO.state : uSCensusDAO.stateName;
+            return state;
         }
     }
 }

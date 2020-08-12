@@ -237,24 +237,35 @@ namespace CensusAnalyserTest
         public void GivenUSCensusFile_WhenProper_ShouldReturnMostPopulousState()
         {
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "population", SortOrder.SortBy.DESC).ToString();
-            USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
-            Assert.AreEqual("California", sortedIndianData[0].stateName);
+            USCensusDAO[] sortedUSData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
+            Assert.AreEqual("California", sortedUSData[0].stateName);
         }
 
         [Test]
         public void GivenUSCensusFile_WhenProper_ShouldReturnMostLargeAreaState()
         {
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "usArea", SortOrder.SortBy.DESC).ToString();
-            USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
-            Assert.AreEqual("Alaska", sortedIndianData[0].stateName);
+            USCensusDAO[] sortedUSData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
+            Assert.AreEqual("Alaska", sortedUSData[0].stateName);
         }
 
         [Test]
         public void GivenUSCensusFile_WhenProper_ShouldReturnLargePopulationDensityState()
         {
             string sortedData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "populationDensity", SortOrder.SortBy.DESC).ToString();
-            USCensusDAO[] sortedIndianData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
-            Assert.AreEqual("District of Columbia", sortedIndianData[0].stateName);
+            USCensusDAO[] sortedUSData = JsonConvert.DeserializeObject<USCensusDAO[]>(sortedData);
+            Assert.AreEqual("District of Columbia", sortedUSData[0].stateName);
+        }
+
+        [Test]
+        public void GivenUSAndIndianCensusFile_WhenProper_ShouldReturnMostPopulousStateWIthDensity()
+        {
+            string indiaData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.INDIA, indianStateCensusFilePath, indianStateCensusHeaders, "density", SortOrder.SortBy.DESC).ToString();
+            CensusDataDAO[] sortedIndianData = JsonConvert.DeserializeObject<CensusDataDAO[]>(indiaData);
+            string usData = censusAnalyser.GetSortedStateCodeDataInJsonFormat(Country.US, usCensusFilepath, usCensusHeaders, "populationDensity", SortOrder.SortBy.DESC).ToString();
+            USCensusDAO[] sortedUSData = JsonConvert.DeserializeObject<USCensusDAO[]>(usData);
+            string mostDenseState = censusAnalyser.GetMostDenseStateBetweenUSAndIndia(sortedIndianData[0],sortedUSData[0]);
+            Assert.AreEqual("District of Columbia", mostDenseState);
         }
     }
 }
