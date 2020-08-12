@@ -54,7 +54,8 @@ namespace CensusAnalyser
             return JsonConvert.SerializeObject(lists);
         }
 
-        public List<CensusDTO> getDataSorted(string sortfield,List<CensusDTO> lines) {
+        public List<CensusDTO> getDataSorted(string sortfield,List<CensusDTO> lines) 
+        {
             switch (sortfield)
             {
                 case "stateName": return lines.OrderBy(x => x.stateName).ToList();
@@ -65,6 +66,34 @@ namespace CensusAnalyser
                 case "population": return lines.OrderBy(x => x.population).ToList();
                 default: return lines.OrderBy(x => x.tin).ToList();
             }    
+        }
+
+        public object loadUSCensusData(string csvFilePath, string dataHeaders)
+        {
+            dataMap = new Dictionary<string, CensusDTO>();
+            if (!File.Exists(csvFilePath))
+            {
+                throw new CensusAnalyserException("File Not Found", CensusAnalyserException.ExceptionType.FILE_NOT_FOUND);
+            }
+            if (Path.GetExtension(csvFilePath) != ".csv")
+            {
+                throw new CensusAnalyserException("Invalid File Type", CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE);
+            }
+            censusData = File.ReadAllLines(csvFilePath);
+            foreach (string data in censusData.Skip(1))
+            {
+                if (!data.Contains(","))
+                {
+                    throw new CensusAnalyserException("File Contains Wrong Delimiter", CensusAnalyserException.ExceptionType.INCORRECT_DELIMITER);
+                }
+                string[] column = data.Split(",");
+                dataMap.Add(column[1], new CensusDTO(new USCensusDAO(column[0], column[1], column[2], column[3],column[4],column[5],column[6],column[7],column[8])));
+            }
+            if (censusData[0] != dataHeaders)
+            {
+                throw new CensusAnalyserException("Incorrect header in Data", CensusAnalyserException.ExceptionType.INCORRECT_HEADER);
+            }
+            return dataMap.ToDictionary(p => p.Key, p => p.Value);
         }
     }
 }

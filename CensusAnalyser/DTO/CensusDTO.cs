@@ -15,6 +15,12 @@ namespace CensusAnalyser.POCO
         public long population;
         public long area;
         public long density;
+        public long housingUnits;
+        public double totalArea;
+        public double waterArea;
+        public double landArea;
+        public double populationDensity;
+        public double housingDensity;
 
 
         public CensusDTO(StateCodeDAO stateCodeDao)
@@ -31,6 +37,19 @@ namespace CensusAnalyser.POCO
             this.population = censusDataDao.population;
             this.area = censusDataDao.area;
             this.density = censusDataDao.density;
+        }
+
+        public CensusDTO(USCensusDAO usCensusDAO)
+        {
+            this.stateCode = usCensusDAO.stateId;
+            this.stateName = usCensusDAO.stateName;
+            this.population = usCensusDAO.population;
+            this.housingUnits = usCensusDAO.housingUnits;
+            this.totalArea = usCensusDAO.totalArea;
+            this.waterArea = usCensusDAO.waterArea;
+            this.landArea = usCensusDAO.landArea;
+            this.populationDensity = usCensusDAO.populationDensity;
+            this.housingDensity = usCensusDAO.housingDensity;
         }
     }
 }
